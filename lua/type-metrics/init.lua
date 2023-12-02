@@ -38,4 +38,8 @@ function M.setup()
     })
 end
 
+function M.get_max()
+    return M.max
+end
+
 return M
