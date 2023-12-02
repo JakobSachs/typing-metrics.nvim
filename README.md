@@ -10,7 +10,7 @@ monitor and improve their typing efficiency.
 ## 🛣️ Feature Roadmap
 
 - [x] Statusbar widget
-- [ ] Realtime display options (Popup, virtual text/hover)
+- [ ] Realtime display options (Popup, virtual text/hover (virtual is maybe unfeasable?))
 - [ ] Buffer Statistics (track stats for each file)
 - [ ] Session Statistics (track stats for a 'session'/instance of nvim)
 - [ ] Setup Language/file-type based segregation of stats
