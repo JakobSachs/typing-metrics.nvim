@@ -1,4 +1,4 @@
--- Main file for type-metrics.nvim
+-- Main file for typing-metrics.nvim
 local M = {}
 
 M.start_time = nil
