@@ -3,6 +3,7 @@ local M = {}
 
 M.start_time = nil
 M.char_count = 0
+M.max = 0
 
 -- Function to get current time
 local function get_current_time()
@@ -19,6 +20,7 @@ local function calculate_wpm()
 
     if elapsed_time > 0 then
         local wpm = (M.char_count / 5) / (elapsed_time / 60)
+        M.max = math.max(M.max, wpm)
         print(string.format("Current WPM: %.2f\n", wpm))
     end
 end
