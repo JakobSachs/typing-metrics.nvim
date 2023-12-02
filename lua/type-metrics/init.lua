@@ -19,7 +19,7 @@ local function calculate_wpm()
 
     if elapsed_time > 0 then
         local wpm = (M.char_count / 5) / (elapsed_time / 60)
-        vim.api.nvim_out_write(string.format("Current WPM: %.2f\n", wpm))
+        print(string.format("Current WPM: %.2f\n", wpm))
     end
 end
 
