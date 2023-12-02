@@ -1,33 +1,39 @@
 -- Main file for type-metrics.nvim
 local M = {}
 
-local key_count = 0
-local start_time = nil
-local last_update = nil
+M.start_time = nil
+M.char_count = 0
 
+-- Function to get current time
 local function get_current_time()
     return vim.loop.hrtime() / 1e9 -- high-resolution time in seconds
 end
 
-function M.on_key_pressed(key)
-    if start_time == nil then
-        start_time = get_current_time()
-    end
-
-    key_count = key_count + 1
-    last_update = get_current_time()
-
-    M.update_wpm() -- Update WPM every time a key is pressed
-end
-
-function M.update_wpm()
+-- Function to calculate and display WPM
+local function calculate_wpm()
     local current_time = get_current_time()
-    local elapsed_time = current_time - start_time
+    if M.start_time == nil then
+        M.start_time = current_time
+    end
+    local elapsed_time = current_time - M.start_time
 
     if elapsed_time > 0 then
-        local wpm = (key_count / 5) / (elapsed_time / 60) -- Average word length is considered 5 characters
-        print(string.format("Current WPM: %.2f", wpm))    -- Display WPM in the command line
+        local wpm = (M.char_count / 5) / (elapsed_time / 60)
+        vim.api.nvim_out_write(string.format("Current WPM: %.2f\n", wpm))
     end
+end
+
+-- Function to update character count and calculate WPM
+function M.on_text_changed()
+    M.char_count = M.char_count + 1
+    calculate_wpm()
+end
+
+function M.setup()
+    -- Setup Autocmds for TextChanged and TextChangedI
+    vim.api.nvim_create_autocmd({ "TextChanged", "TextChangedI" }, {
+        callback = M.on_text_changed,
+    })
 end
 
 return M
