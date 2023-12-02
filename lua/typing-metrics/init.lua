@@ -13,8 +13,6 @@ M.config = {
 M.char_count = 0
 M.average = {}
 
-
-
 -- Function to get current time
 local function get_current_time()
     return vim.loop.hrtime() / 1e9 -- high-resolution time in seconds
@@ -31,19 +29,9 @@ local function update_wpm()
     M.char_count = 0
 end
 
-
-
 -- Function to update character count and calculate WPM
 function M.on_text_changed()
     M.char_count = M.char_count + 1
-end
-
-function M.insert_start()
-    M.char_count = 0
-end
-
-function M.insert_stop()
-    M.char_count = 0
 end
 
 -- API functions for external use
@@ -80,10 +68,14 @@ function M.get_statusline()
     return bar
 end
 
+local function on_timer()
+    update_wpm()
+end
+
 -- Start a Timer
 function M.start_timer()
     local timer = vim.loop.new_timer()
-    timer:start(M.config.update_interval, M.config.update_interval, vim.schedule_wrap(update_wpm)) -- 1000ms delay, 1000ms interval
+    timer:start(M.config.update_interval, M.config.update_interval, vim.schedule_wrap(on_timer)) -- 1000ms delay, 1000ms interval
 end
 
 function M.setup(user_config)
@@ -96,18 +88,19 @@ function M.setup(user_config)
         M.config[k] = v
     end
 
-    -- Setup Autocmds for TextChanged and TextChangedI
+    -- Setup Autocmds for insert mode
     vim.api.nvim_create_autocmd({ "InsertCharPre" }, {
         callback = M.on_text_changed,
     })
 
-    -- vim.api.nvim_create_autocmd({ "InsertEnter" }, {
-    --     callback = M.insert_start,
-    -- })
+    -- Create autocmds for opening buffers to pop ups etc
+    vim.api.nvim_create_autocmd({ "BufReadPost" }, {
+        callback = function()
+        end,
 
-    -- vim.api.nvim_create_autocmd({ "InsertLeave" }, {
-    --     callback = M.insert_stop,
-    -- })
+    })
+
+
 
     -- Start timer
     M.start_timer()
