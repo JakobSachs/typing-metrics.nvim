@@ -56,7 +56,7 @@ Tailor the plugin's behavior to your liking with these settings in your
 require('typing-metrics').setup({
     display_mode = 'statusline', -- Options: 'statusline', 'floating', 'overlay'
     average_word_length = 5,
-    update_interval = 1, -- In seconds
+    update_interval = 1000, -- In milliseconds
     privacy_mode = false,
 })
 ```
