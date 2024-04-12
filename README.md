@@ -54,10 +54,12 @@ Tailor the plugin's behavior to your liking with these settings in your
 ```lua
 -- Example configuration in Lua
 require('typing-metrics').setup({
-    display_mode = 'statusline', -- Options: 'statusline', 'floating', 'overlay'
-    average_word_length = 5,
-    update_interval = 1000, -- In milliseconds
-    privacy_mode = false,
+    -- Default config values
+    word_length = 5, -- average word length
+    update_interval = 500, -- sample time in milliseconds
+    average_size = 3, -- number of samples to keep for average calculation
+    target_wpm = 60, -- speed to show full bar
+    bar_direction = "vertical", -- or horizontal
 })
 ```
 
